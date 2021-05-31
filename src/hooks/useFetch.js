@@ -17,7 +17,7 @@ export const useFetch = ( url ) => {
     useEffect( () => {
 
         setState({ data: null, loading: true, error: null });
-
+    
         fetch( url )
             .then( resp => resp.json() )
             .then( data => {
@@ -32,6 +32,13 @@ export const useFetch = ( url ) => {
                         console.log('setState no se llamo');
                     }
                // }, 4000 );
+            })
+            .catch( () => {
+                setState({
+                    data: null, 
+                    loading: false, 
+                    error: 'No se pudo cargar la info'
+                })
             });
 
     }, [url]);
