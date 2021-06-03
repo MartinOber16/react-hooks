@@ -27,7 +27,7 @@ export const TodoAdd = ({ handleAddTodo }) => {
 
 
     return (
-        <>
+        <div>
             <h4>Agregar TODO</h4>
             <hr />
             
@@ -47,6 +47,6 @@ export const TodoAdd = ({ handleAddTodo }) => {
                 </button>
 
             </form>
-        </>
+        </div>
     )
 }

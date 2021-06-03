@@ -32,3 +32,5 @@ export const MultipleCustomHooks = () => {
         </div>
     )
 }
+
+MultipleCustomHooks.displayName='MultipleCustomHooks';
