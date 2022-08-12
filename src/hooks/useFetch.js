@@ -1,48 +1,46 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
-export const useFetch = ( url ) => {
+export const useFetch = url => {
+	const isMounted = useRef(true);
+	const [state, setState] = useState({
+		data: null,
+		isLoading: true,
+		hasError: null,
+	});
 
-    const isMounted = useRef(true);
-    const [state, setState] = useState({ data: null, loading: true, error: null });
+	useEffect(() => {
+		// Cuando el componente se desmonte actualizo el valor de la referencia
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
 
-    useEffect( () => {
+	useEffect(() => {
+		setState({ data: null, isLoading: true, hasError: null });
 
-        // Cuando el componente se desmonte actualizo el valor de la referencia
-        return () => {
-            isMounted.current = false;
-        }
-        
-    }, []);
+		fetch(url)
+			.then(resp => resp.json())
+			.then(data => {
+				//setTimeout( () => {
+				if (isMounted.current) {
+					setState({
+						data,
+						isLoading: false,
+						hasError: null,
+					});
+				} else {
+					console.log('setState no se llamo');
+				}
+				// }, 4000 );
+			})
+			.catch(() => {
+				setState({
+					data: null,
+					isLoading: false,
+					hasError: 'No se pudo cargar la info',
+				});
+			});
+	}, [url]);
 
-    useEffect( () => {
-
-        setState({ data: null, loading: true, error: null });
-    
-        fetch( url )
-            .then( resp => resp.json() )
-            .then( data => {
-                //setTimeout( () => {
-                    if( isMounted.current ) {
-                        setState( {
-                            data,
-                            loading: false,
-                            error: null,
-                        });
-                    } else {
-                        console.log('setState no se llamo');
-                    }
-               // }, 4000 );
-            })
-            .catch( () => {
-                setState({
-                    data: null, 
-                    loading: false, 
-                    error: 'No se pudo cargar la info'
-                })
-            });
-
-    }, [url]);
-
-    return state;
-
-}
+	return state;
+};
