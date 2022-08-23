@@ -1,52 +1,51 @@
 import { useEffect, useReducer } from 'react';
-import { todoReducer } from '../components/08-useReducer/todoReducer';
+import { todoReducer } from '../08-useReducer/todoReducer';
 
-// Recupero la información del localStorage
 const init = () => {
-	return JSON.parse(localStorage.getItem('todos')) || [];
-};
+    return JSON.parse(localStorage.getItem('todos')) || [];
+}
 
 export const useTodos = () => {
-	const [todos, dispatch] = useReducer(todoReducer, [], init);
+  
+    const [ todos, dispatch ] = useReducer( todoReducer, [], init );
 
-	// Cuando todos cambia, guardo la información en el localStorage
-	useEffect(() => {
-		localStorage.setItem('todos', JSON.stringify(todos));
-	}, [todos]);
+    useEffect(() => {
+      localStorage.setItem('todos', JSON.stringify( todos ) );
+    }, [todos])
+    
 
-	const handleDelete = todoId => {
-		if (!todoId) {
-			return;
-		}
+    const handleNewTodo = ( todo ) => {
+        const action = {
+            type: '[TODO] Add Todo',
+            payload: todo
+        }
 
-		const action = {
-			type: 'delete',
-			payload: todoId,
-		};
+        dispatch( action );
+    }
 
-		dispatch(action);
-	};
+    const handleDeleteTodo = ( id ) => {
+        dispatch({
+            type: '[TODO] Remove Todo',
+            payload: id
+        });
+    }
 
-	const handleToggle = todoId => {
-		dispatch({
-			type: 'toggle',
-			payload: todoId,
-		});
-	};
+    const handleToggleTodo = ( id ) => {
+        dispatch({
+            type: '[TODO] Toggle Todo',
+            payload: id
+        });
+    }
 
-	const handleAddTodo = newTodo => {
-		dispatch({
-			type: 'add',
-			payload: newTodo,
-		});
-	};
+    return {
+        todos,
 
-	return {
-		todos,
-		handleDelete,
-		handleToggle,
-		handleAddTodo,
-		todosCount: todos.length,
-		pendingTodosCount: todos.filter(todo => !todo.done).length,
-	};
-};
+        todosCount: todos.length,
+        pendingTodosCount: todos.filter(todo=> !todo.done).length,
+
+        handleNewTodo,
+        handleDeleteTodo,
+        handleToggleTodo,
+    }
+
+}
