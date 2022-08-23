@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 // import { HookApp } from './HookApp';
 // import { CounterApp } from './components/01-useState/CounterApp';
@@ -14,8 +15,10 @@ import ReactDOM from 'react-dom';
 // import { MemoHook } from './components/06-memos/MemoHook';
 // import { CallbackHook } from './components/06-memos/CallbackHook';
 // import { Padre } from './components/07-tarea-memo/Padre';
-import { TodoApp } from './components/08-useReducer/TodoApp';
-// import { MainApp } from './components/09-useContext/MainApp';
+// import { TodoApp } from './components/08-useReducer/TodoApp';
+import { MainApp } from './components/09-useContext/MainApp';
+
+import './index.css';
 
 ReactDOM.render(
 	// <HookApp />,
@@ -31,7 +34,9 @@ ReactDOM.render(
 	// <MemoHook />,
 	// <CallbackHook />,
 	// <Padre />,
-	<TodoApp />,
-	// <MainApp />,
+	// <TodoApp />,
+	<BrowserRouter>
+		<MainApp />
+	</BrowserRouter>,
 	document.getElementById('root')
 );
